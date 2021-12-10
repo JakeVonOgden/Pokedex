@@ -49,10 +49,11 @@ const Pokedex = () => {
     const goBack = () => { setCardClicked(false); }
 
     const pokemonMapper = () => {
+        allPokemon.sort((a,b) => (a.id > b.id) ? 1 : -1)
         return allPokemon.map((pokemon, index) => {
             return (
                 <>
-                    <div className={`thumb-container ${pokemon.types[0].type.name}`} onClick={() => {getInfo(pokemon)} }>
+                    <div className={`thumb-container ${pokemon.types[0].type.name}`} onClick={() => {getInfo(pokemon)} } index={pokemon.id}>
                         <div className="number">
                             <small>#0{pokemon.id}</small>
                         </div>
