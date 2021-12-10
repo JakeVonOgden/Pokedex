@@ -9,7 +9,7 @@ const Navbar = () => {
     
     const Menu = () => (
         <>
-            <p> <a href="/">Pokédex</a> </p>
+            <p> <a href="/Pokedex">Pokédex</a> </p>
             <p> <img src={PokeBall} alt="pokeball"/> </p>
         </>
     )
@@ -24,7 +24,7 @@ const Navbar = () => {
                 </div>
             </div>
             <Switch>
-                <Route exact path='/'> <Pokedex /> </Route>
+                <Route exact path='/Pokedex'> <Pokedex /> </Route>
                 <Route exact path='/info'> <Info /> </Route>
             </Switch>
         </>
