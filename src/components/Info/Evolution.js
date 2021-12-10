@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import './info.css';
 
 const Evolution = (props) => {
-
     const [base, setBase] = useState([]);
     const [middle, setMiddle] = useState([]);
     const [final, setFinal] = useState([]);
@@ -11,7 +10,6 @@ const Evolution = (props) => {
         fetch(`https://pokeapi.co/api/v2/pokemon/${props.thirdEvo}`)
         .then((res) => res.json())
         .then((thirdEvo) => {
-            console.log(thirdEvo)
             setFinal(thirdEvo)
         })
     }
@@ -20,7 +18,6 @@ const Evolution = (props) => {
         fetch(`https://pokeapi.co/api/v2/pokemon/${props.secondEvo}`)
         .then((res) => res.json())
         .then((secondEvo) => {
-            console.log(secondEvo)
             setMiddle(secondEvo)
         })
         if (props.thirdEvo !== "") {
@@ -32,7 +29,6 @@ const Evolution = (props) => {
         fetch(`https://pokeapi.co/api/v2/pokemon/${props.firstEvo}`)
         .then((res) => res.json())
         .then((basePokemon) => {
-            console.log(basePokemon)
             setBase(basePokemon)
         })
         fetchSecond()
@@ -46,9 +42,10 @@ const Evolution = (props) => {
         <>
             <div className="evo-wrapper">
                 
+                {/*       CARD 1       */}
                 <div className="evo-card">
                     <p className="xs-text">#00{base.id}</p>
-                    <div className={`evo-img ${props.type}`}>
+                    <div className={`evo-img ${props.type}`} onClick={() => {props.switchData(base.name)}}>
                         <div className="display">
                             <div className="box-sizing">
                         {   base.sprites !== undefined
@@ -63,9 +60,10 @@ const Evolution = (props) => {
                     <p className="xs-text">{base.name}</p>
                 </div>
                 
+                {/*       CARD 2       */}
                 <div className="evo-card">
                     <p className="xs-text">#00{middle.id}</p>
-                    <div className={`evo-img ${props.type}`}>
+                    <div className={`evo-img ${props.type}`} onClick={() => {props.switchData(middle.name)}}>
                         <div className="display">
                             <div className="box-sizing">
                         {   middle.sprites !== undefined
@@ -80,9 +78,10 @@ const Evolution = (props) => {
                     <p className="xs-text">{middle.name}</p>
                 </div>
                 
+                {/*       CARD 3       */}
                 <div className="evo-card">
                     <p className="xs-text">#00{final.id}</p>
-                    <div className={`evo-img ${props.type}`}>
+                    <div className={`evo-img ${props.type}`} onClick={() => {props.switchData(final.name)}}>
                         <div className="display">
                             <div className="box-sizing">
                         {   final.sprites !== undefined

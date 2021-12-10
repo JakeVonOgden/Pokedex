@@ -4,27 +4,28 @@ import './info.css';
 
 
 const Info = (props) => {
-    
     const {weight, image, type, name, abilities, stats, baseExp} = props;
-    
     const [pokemonData, setPokemonData] = useState([]);
     const [firstEvo, setFirstEvo] = useState("");
     const [secondEvo, setSecondEvo] = useState("");
     const [thirdEvo, setThirdEvo] = useState("");
-    
-    const fetchEvoChain = () => {
-        
-        if (firstEvo !== "") {return}
+    const [Weight, setWeight] = useState(weight);
+    const [Image, setImage] = useState(image);
+    const [Name, setName] = useState(name);
+    const [Abilities, setAbilities] = useState(abilities);
+    const [Stats, setStats] = useState(stats);
+    const [BaseExp, setBaseExp] = useState(baseExp);
 
+    const fetchEvoChain = () => {
+        if (firstEvo !== "") {return}
+        
         if (pokemonData.evolution_chain !== undefined) {
             fetch(pokemonData.evolution_chain.url)
             .then((res) => res.json())
             .then((evoChain) => {
-                console.log(evoChain)
                 setFirstEvo(evoChain.chain.species.name)
                 setSecondEvo(evoChain.chain.evolves_to[0].species.name)
                 if (evoChain.chain.evolves_to[0].evolves_to[0] !== undefined) {
-
                     setThirdEvo(evoChain.chain.evolves_to[0].evolves_to[0].species.name)
                 }
             })
@@ -35,6 +36,21 @@ const Info = (props) => {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`)
         const data = await res.json()
         setPokemonData(data);
+    }
+    
+    const switchData = async(newPokemon) => {
+        const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${newPokemon}`)
+        const pokemonData = await pokemonResponse.json()
+        setWeight(pokemonData.weight);
+        setImage(pokemonData.sprites.other.dream_world.front_default);
+        setName(pokemonData.name);
+        setAbilities(pokemonData.abilities);
+        setStats(pokemonData.stats);
+        setBaseExp(pokemonData.base_experience);
+
+        const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${newPokemon}`)
+        const speciesData = await speciesResponse.json()
+        setPokemonData(speciesData);
     }
     
     useEffect(() => {
@@ -48,7 +64,6 @@ const Info = (props) => {
         {   pokemonData.pokedex_numbers !== undefined
             ?
             <>
-                {console.log(pokemonData)}
                 <div className="cards-container">
                     <div className="card-wrapper">
                         <div className="card-container">
@@ -56,12 +71,12 @@ const Info = (props) => {
                                 <p class="id-number">#00{pokemonData.pokedex_numbers[0].entry_number}</p>
                                 <div className="display">
                                     <div className="box-sizing">
-                                        <img src={image} alt="pokemon" />
+                                        <img src={Image} alt="pokemon" />
                                     </div>
                                 </div>
                                 <div className="bottom-section">
                                     <p class="type">{type} Type</p>
-                                    <p class="name">{name}</p>
+                                    <p class="name">{Name}</p>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +86,7 @@ const Info = (props) => {
                             <div className="bio-training-content">
                                 <div className="details">
                                     <p className="title">Bio</p>
-                                    <div className="flavor-text"><span> {name}, </span>  a <span> {type} type  pokemon. </span> {pokemonData.flavor_text_entries[0].flavor_text} </div>
+                                    <div className="flavor-text"><span> {Name}, </span>  a <span> {type} type  pokemon. </span> {pokemonData.flavor_text_entries[0].flavor_text} </div>
                                     <div className="flex-col">
                                         <div className="flex-wrapper">
                                             <p className="bio-text">Genus:</p>
@@ -88,7 +103,7 @@ const Info = (props) => {
                                         <div className="flex-wrapper">
                                             <p className="bio-text">Weight:</p>
                                             <div class="sm-text">
-                                                <p> {weight} </p>
+                                                <p> {Weight} </p>
                                             </div>
                                         </div>
                                         
@@ -98,18 +113,18 @@ const Info = (props) => {
                                                 <div className="flex-col">
                                                     <p className="abilities"> 
                                                         { 
-                                                         abilities[0] !== undefined
+                                                         Abilities[0] !== undefined
                                                          ?
-                                                          abilities[0].ability.name
+                                                          Abilities[0].ability.name
                                                          :
                                                           <> N/A </>
                                                         }
                                                     </p>
                                                     <p className="abilities"> 
                                                         { 
-                                                         abilities[1] !== undefined
+                                                         Abilities[1] !== undefined
                                                          ?
-                                                          abilities[1].ability.name
+                                                          Abilities[1].ability.name
                                                          :
                                                           <> </>
                                                         }
@@ -124,7 +139,7 @@ const Info = (props) => {
                                     <div className="flex-wrapper">
                                         <p className="bio-text">Base Exp:</p>
                                         <div className="sm-text">
-                                            <p> {baseExp} </p>
+                                            <p> {BaseExp} </p>
                                         </div>
                                     </div>
                                     <div className="flex-wrapper">
@@ -153,7 +168,7 @@ const Info = (props) => {
                                 <p className="title">Evolution</p>
                                 { firstEvo && secondEvo && thirdEvo !== ""
                                 ?
-                                    <Evolution firstEvo={firstEvo} secondEvo={secondEvo} thirdEvo={thirdEvo} name={name} type={type} />
+                                    <Evolution firstEvo={firstEvo} secondEvo={secondEvo} thirdEvo={thirdEvo} name={name} type={type} switchData={switchData} />
                                 :
                                 null
                                 }
@@ -163,27 +178,27 @@ const Info = (props) => {
                                 <div className="stats-container">
                                     <div className="stats">
                                         <p className="bio-text">HP</p>
-                                        <p className="xs-text"> {stats[0].base_stat} </p>
+                                        <p className="xs-text"> {Stats[0].base_stat} </p>
                                     </div>
                                     <div className="stats">
                                         <p className="bio-text">Atk</p>
-                                        <p className="xs-text"> {stats[1].base_stat} </p>
+                                        <p className="xs-text"> {Stats[1].base_stat} </p>
                                     </div>
                                     <div className="stats">
                                         <p className="bio-text">Def</p>
-                                        <p className="xs-text"> {stats[2].base_stat} </p>
+                                        <p className="xs-text"> {Stats[2].base_stat} </p>
                                     </div>
                                     <div className="stats">
                                         <p className="bio-text">Sp. Atk</p>
-                                        <p className="xs-text"> {stats[3].base_stat} </p>
+                                        <p className="xs-text"> {Stats[3].base_stat} </p>
                                     </div>
                                     <div className="stats">
                                         <p className="bio-text">Sp. Def</p>
-                                        <p className="xs-text"> {stats[4].base_stat} </p>
+                                        <p className="xs-text"> {Stats[4].base_stat} </p>
                                     </div>
                                     <div className="stats">
                                         <p className="bio-text">Speed</p>
-                                        <p className="xs-text"> {stats[5].base_stat} </p>
+                                        <p className="xs-text"> {Stats[5].base_stat} </p>
                                     </div>
                                 </div>
                             </div>

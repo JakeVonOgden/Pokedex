@@ -27,7 +27,6 @@ const Pokedex = () => {
     }
     
     const getAllPokemon = async() => {
-        
         const res = await fetch(loadMore)
         const data = await res.json()
         setLoadMore(data.next)
@@ -41,7 +40,6 @@ const Pokedex = () => {
         }
         
         createPokemonObject(data.results);
-        await console.log(allPokemon);
     }
 
     useEffect(() => {
@@ -54,7 +52,7 @@ const Pokedex = () => {
         return allPokemon.map((pokemon, index) => {
             return (
                 <>
-                    <div className={`thumb-container ${pokemon.types[0].type.name}`} onClick={() => {getInfo(pokemon); console.log(pokemon)} }>
+                    <div className={`thumb-container ${pokemon.types[0].type.name}`} onClick={() => {getInfo(pokemon)} }>
                         <div className="number">
                             <small>#0{pokemon.id}</small>
                         </div>

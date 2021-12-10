@@ -29,6 +29,11 @@
     height: 100px;
     width: 100px;
     cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+
+.evo-img:hover {
+    transform: scale(1.05);
 }
 
 .display {
@@ -55,7 +60,6 @@
     width: 260px;
     height: 260px;
 }
-
 
 .evo-img img {
     inset: 0px;
@@ -143,14 +147,6 @@
     font-family: var(--paragraph-font);
     display: block;
 }
-
-/* @media screen and (min-width: 768px) {
-    .bio-training {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 20px;
-    }
-} */
 
 .flex-wrapper {
     width: 100%;
@@ -241,7 +237,6 @@
     margin-bottom: 5px;
     
 }
-
 
 .abilities {
     text-transform: capitalize;
